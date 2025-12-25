@@ -5,7 +5,7 @@ const Pricing = () => {
     {
       name: "Standard",
       timeframe: "Innerhalb von 2 Monaten",
-      pricePerWh: "0,02",
+      pricePerWh: "0,20",
       features: [
         "Abholung nach Terminvereinbarung",
         "Entsorgungsnachweis",
@@ -18,7 +18,7 @@ const Pricing = () => {
     {
       name: "Express",
       timeframe: "Innerhalb von 14 Tagen",
-      pricePerWh: "0,04",
+      pricePerWh: "0,80",
       features: [
         "Priorisierte Abholung",
         "Entsorgungsnachweis",
