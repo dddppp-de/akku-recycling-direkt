@@ -98,7 +98,7 @@ const Pricing = () => {
 
         <div className="mt-12 p-6 rounded-xl bg-muted/50 max-w-4xl mx-auto">
           <p className="text-center text-muted-foreground">
-            <strong className="text-foreground">Mindestbestellwert:</strong> 20€ | 
+            <strong className="text-foreground">Mindestbestellwert:</strong> 100€ | 
             <strong className="text-foreground ml-4">Maximale Kapazität pro Abholung:</strong> 10.000 Wh |
             <strong className="text-foreground ml-4">Abholung:</strong> Kostenlos
           </p>
