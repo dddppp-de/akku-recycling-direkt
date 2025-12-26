@@ -50,8 +50,13 @@ const QuoteForm = () => {
       setIsSubmitting(true);
       
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
+      //await new Promise((resolve) => setTimeout(resolve, 1500));
+      await fetch("https://formspree.io/f/xpqzzywye", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(formData),
+});
+      
       toast({
         title: "Angebot angefordert!",
         description: `Wir haben Ihre Anfrage erhalten und senden Ihnen in Kürze ein Angebot an ${formData.email}.`,
