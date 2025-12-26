@@ -34,55 +34,63 @@ const QuoteForm = () => {
     return Math.max(price, 20).toFixed(2);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrors({});
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setErrors({});
 
-    try {
-      quoteSchema.parse({
-        postalCode: formData.postalCode,
-        capacity: parseFloat(formData.capacity) || 0,
-        timeframe: formData.timeframe,
-        customerType: formData.customerType,
-        email: formData.email,
-      });
+  try {
+    quoteSchema.parse({
+      postalCode: formData.postalCode,
+      capacity: parseFloat(formData.capacity) || 0,
+      timeframe: formData.timeframe,
+      customerType: formData.customerType,
+      email: formData.email,
+    });
 
-      setIsSubmitting(true);
-      
-      // Simulate API call
-      //await new Promise((resolve) => setTimeout(resolve, 1500));
-      await fetch("https://formspree.io/f/xpqzzywye", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(formData),
-});
-      
-      toast({
-        title: "Angebot angefordert!",
-        description: `Wir haben Ihre Anfrage erhalten und senden Ihnen in Kürze ein Angebot an ${formData.email}.`,
-      });
+    setIsSubmitting(true);
 
-      setFormData({
-        postalCode: "",
-        capacity: "",
-        timeframe: "",
-        customerType: "",
-        email: "",
-      });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const newErrors: Record<string, string> = {};
-        error.errors.forEach((err) => {
-          if (err.path[0]) {
-            newErrors[err.path[0] as string] = err.message;
-          }
-        });
-        setErrors(newErrors);
-      }
-    } finally {
-      setIsSubmitting(false);
+    const response = await fetch("https://formspree.io/f/xpqzzywye", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData).toString(),
+    });
+
+    if (!response.ok) {
+      throw new Error("Formular konnte nicht gesendet werden");
     }
-  };
+
+    toast({
+      title: "Angebot angefordert!",
+      description: `Wir haben Ihre Anfrage erhalten und senden Ihnen in Kürze ein Angebot an ${formData.email}.`,
+    });
+
+    setFormData({
+      postalCode: "",
+      capacity: "",
+      timeframe: "",
+      customerType: "",
+      email: "",
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const newErrors: Record<string, string> = {};
+      error.errors.forEach((err) => {
+        if (err.path[0]) {
+          newErrors[err.path[0] as string] = err.message;
+        }
+      });
+      setErrors(newErrors);
+    } else {
+      toast({
+        title: "Fehler",
+        description: "Das Formular konnte nicht gesendet werden.",
+      });
+    }
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+  
 
   return (
     <section id="angebot" className="py-20 md:py-32 bg-hero-gradient">
