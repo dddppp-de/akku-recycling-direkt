@@ -19,27 +19,42 @@ const Header = () => {
           </a>
 
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#leistungen" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-              Leistungen
+            <a
+              href="#leistungen"
+              className="text-muted-foreground hover:text-foreground transition-colors font-medium"
+            >
+              Geplanter Service
             </a>
-            <a href="#preise" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-              Preise
+            <a
+              href="#preise"
+              className="text-muted-foreground hover:text-foreground transition-colors font-medium"
+            >
+              Vorläufige Infos
             </a>
-            <a href="#angebot" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-              Angebot
+            <a
+              href="#angebot"
+              className="text-muted-foreground hover:text-foreground transition-colors font-medium"
+            >
+              Bedarf anmelden
             </a>
-            <a href="#kontakt" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+            <a
+              href="#kontakt"
+              className="text-muted-foreground hover:text-foreground transition-colors font-medium"
+            >
               Kontakt
             </a>
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <a href="tel:+4915678197496" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+            <a
+              href="tel:+4915678197496"
+              className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+            >
               <Phone className="w-4 h-4" />
               <span className="font-medium">+4915678197496</span>
             </a>
             <Button variant="default" size="sm" asChild>
-              <a href="#angebot">Angebot einholen</a>
+              <a href="#angebot">Bedarf anmelden</a>
             </Button>
           </div>
 
@@ -55,20 +70,32 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-border animate-fade-in">
             <nav className="flex flex-col gap-4">
-              <a href="#leistungen" className="text-muted-foreground hover:text-foreground transition-colors font-medium py-2">
-                Leistungen
+              <a
+                href="#leistungen"
+                className="text-muted-foreground hover:text-foreground transition-colors font-medium py-2"
+              >
+                Geplanter Service
               </a>
-              <a href="#preise" className="text-muted-foreground hover:text-foreground transition-colors font-medium py-2">
-                Preise
+              <a
+                href="#preise"
+                className="text-muted-foreground hover:text-foreground transition-colors font-medium py-2"
+              >
+                Vorläufige Infos
               </a>
-              <a href="#angebot" className="text-muted-foreground hover:text-foreground transition-colors font-medium py-2">
-                Angebot
+              <a
+                href="#angebot"
+                className="text-muted-foreground hover:text-foreground transition-colors font-medium py-2"
+              >
+                Bedarf anmelden
               </a>
-              <a href="#kontakt" className="text-muted-foreground hover:text-foreground transition-colors font-medium py-2">
+              <a
+                href="#kontakt"
+                className="text-muted-foreground hover:text-foreground transition-colors font-medium py-2"
+              >
                 Kontakt
               </a>
               <Button variant="default" className="w-full mt-2" asChild>
-                <a href="#angebot">Angebot einholen</a>
+                <a href="#angebot">Bedarf anmelden</a>
               </Button>
             </nav>
           </div>
