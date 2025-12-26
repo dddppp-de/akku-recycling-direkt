@@ -11,7 +11,7 @@ const Footer = () => {
                 <Battery className="w-5 h-5 text-foreground" />
               </div>
               <span className="font-bold text-xl">
-                Akkuabholung<span className="text-accent">.de</span>
+                AkkuAbholung<span className="text-accent">.de</span>
               </span>
             </a>
             <p className="text-primary-foreground/70 max-w-md">
