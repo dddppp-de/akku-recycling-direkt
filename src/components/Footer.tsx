@@ -23,21 +23,24 @@ const Footer = () => {
             <h4 className="font-bold text-lg mb-4">Kontakt</h4>
             <ul className="space-y-3">
               <li>
-                <a href="tel:+4930123456789" className="flex items-center gap-2 text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                  Stefan Pogrzeba 
+              </li>
+              <li>
+                <a href="tel:+4915678197496" className="flex items-center gap-2 text-primary-foreground/70 hover:text-primary-foreground transition-colors">
                   <Phone className="w-4 h-4" />
-                  030 123 456 789
+                  +4915678197496
                 </a>
               </li>
               <li>
-                <a href="mailto:info@akkurecycling.de" className="flex items-center gap-2 text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                <a href="mailto:contactwebmaster@e.mail.de" className="flex items-center gap-2 text-primary-foreground/70 hover:text-primary-foreground transition-colors">
                   <Mail className="w-4 h-4" />
-                  info@akkurecycling.de
+                  contactwebmaster@e.mail.de
                 </a>
               </li>
               <li>
-                <span className="flex items-center gap-2 text-primary-foreground/70">
+                <span className="flex items-center gap-2 text-Impressumprimary-foreground/70">
                   <MapPin className="w-4 h-4" />
-                  Berlin, Deutschland
+                  Kampferweg 15, 13158 Berlin, Deutschland
                 </span>
               </li>
             </ul>
