@@ -14,7 +14,7 @@ const Header = () => {
               <Battery className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="font-bold text-lg md:text-xl text-foreground">
-              AkkuRecycling<span className="text-primary">.de</span>
+              AkkuAbholung<span className="text-primary">.de</span>
             </span>
           </a>
 
@@ -34,9 +34,9 @@ const Header = () => {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <a href="tel:+4930123456789" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+            <a href="tel:+4915678197496" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
               <Phone className="w-4 h-4" />
-              <span className="font-medium">030 123 456 789</span>
+              <span className="font-medium">+4915678197496</span>
             </a>
             <Button variant="default" size="sm" asChild>
               <a href="#angebot">Angebot einholen</a>
