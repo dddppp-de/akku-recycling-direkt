@@ -9,7 +9,10 @@ import { z } from "zod";
 
 const quoteSchema = z.object({
   postalCode: z.string().regex(/^\d{5}$/, "Bitte geben Sie eine gültige PLZ ein (5 Ziffern)"),
-  capacity: z.number().min(1, "Kapazität muss mindestens 1 Wh sein").max(10000, "Maximale Kapazität: 10.000 Wh"),
+  capacity: z
+    .number()
+    .min(1, "Kapazität muss mindestens 1 Wh sein")
+    .max(10000, "Maximale Kapazität: 10.000 Wh"),
   timeframe: z.enum(["14days", "2months"]),
   customerType: z.enum(["private", "business", "authority"]),
   email: z.string().email("Bitte geben Sie eine gültige E-Mail-Adresse ein"),
@@ -34,75 +37,78 @@ const QuoteForm = () => {
     return Math.max(price, 20).toFixed(2);
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setErrors({});
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrors({});
 
-  try {
-    quoteSchema.parse({
-      postalCode: formData.postalCode,
-      capacity: parseFloat(formData.capacity) || 0,
-      timeframe: formData.timeframe,
-      customerType: formData.customerType,
-      email: formData.email,
-    });
-
-    setIsSubmitting(true);
-
-    const response = await fetch("https://formspree.io/f/xpqzzywye", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(formData).toString(),
-    });
-
-    if (!response.ok) {
-      throw new Error("Formular konnte nicht gesendet werden");
-    }
-
-    toast({
-      title: "Angebot angefordert!",
-      description: `Wir haben Ihre Anfrage erhalten und senden Ihnen in Kürze ein Angebot an ${formData.email}.`,
-    });
-
-    setFormData({
-      postalCode: "",
-      capacity: "",
-      timeframe: "",
-      customerType: "",
-      email: "",
-    });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const newErrors: Record<string, string> = {};
-      error.errors.forEach((err) => {
-        if (err.path[0]) {
-          newErrors[err.path[0] as string] = err.message;
-        }
+    try {
+      quoteSchema.parse({
+        postalCode: formData.postalCode,
+        capacity: parseFloat(formData.capacity) || 0,
+        timeframe: formData.timeframe,
+        customerType: formData.customerType,
+        email: formData.email,
       });
-      setErrors(newErrors);
-    } else {
+
+      setIsSubmitting(true);
+
+      const response = await fetch("https://formspree.io/f/xpqzzywye", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData as Record<string, string>).toString(),
+      });
+
+      if (!response.ok) {
+        throw new Error("Formular konnte nicht gesendet werden");
+      }
+
       toast({
-        title: "Fehler",
-        description: "Das Formular konnte nicht gesendet werden.",
+        title: "Vielen Dank!",
+        description:
+          "Wir haben Ihre Bedarfsmeldung erhalten. Sie stehen nun auf der Warteliste und werden informiert, sobald unser Service startet.",
       });
+
+      setFormData({
+        postalCode: "",
+        capacity: "",
+        timeframe: "",
+        customerType: "",
+        email: "",
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            newErrors[err.path[0] as string] = err.message;
+          }
+        });
+        setErrors(newErrors);
+      } else {
+        toast({
+          title: "Fehler",
+          description: "Das Formular konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
+        });
+      }
+    } finally {
+      setIsSubmitting(false);
     }
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-  
+  };
 
   return (
     <section id="angebot" className="py-20 md:py-32 bg-hero-gradient">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
-            <span className="text-primary-foreground/80 font-semibold text-sm uppercase tracking-wider">Unverbindlich</span>
+            <span className="text-primary-foreground/80 font-semibold text-sm uppercase tracking-wider">
+              Warteliste
+            </span>
             <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mt-3 mb-4">
-              Jetzt Angebot einholen
+              Jetzt Bedarf anmelden
             </h2>
             <p className="text-primary-foreground/80 text-lg">
-              Erhalten Sie in wenigen Minuten ein kostenloses, unverbindliches Angebot für Ihre Akku-Entsorgung.
+              Akku Abholung befindet sich aktuell im Aufbau. Tragen Sie sich unverbindlich in die Warteliste ein und
+              kündigen Sie Ihren Bedarf an. Wir informieren Sie, sobald unser Abholservice in Ihrer Region startet.
             </p>
           </div>
 
@@ -114,15 +120,19 @@ const handleSubmit = async (e: React.FormEvent) => {
                   id="postalCode"
                   placeholder="z.B. 10115"
                   value={formData.postalCode}
-                  onChange={(e) => setFormData({ ...formData, postalCode: e.target.value.slice(0, 5) })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, postalCode: e.target.value.slice(0, 5) })
+                  }
                   className={errors.postalCode ? "border-destructive" : ""}
                   maxLength={5}
                 />
-                {errors.postalCode && <p className="text-sm text-destructive">{errors.postalCode}</p>}
+                {errors.postalCode && (
+                  <p className="text-sm text-destructive">{errors.postalCode}</p>
+                )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="capacity">Kapazität (Wh) *</Label>
+                <Label htmlFor="capacity">Geschätzte Kapazität (Wh) *</Label>
                 <Input
                   id="capacity"
                   type="number"
@@ -133,26 +143,36 @@ const handleSubmit = async (e: React.FormEvent) => {
                   min={1}
                   max={10000}
                 />
-                {errors.capacity && <p className="text-sm text-destructive">{errors.capacity}</p>}
+                {errors.capacity && (
+                  <p className="text-sm text-destructive">{errors.capacity}</p>
+                )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="timeframe">Abholzeitraum *</Label>
-                <Select value={formData.timeframe} onValueChange={(value) => setFormData({ ...formData, timeframe: value })}>
+                <Label htmlFor="timeframe">Gewünschter Zeitraum *</Label>
+                <Select
+                  value={formData.timeframe}
+                  onValueChange={(value) => setFormData({ ...formData, timeframe: value })}
+                >
                   <SelectTrigger className={errors.timeframe ? "border-destructive" : ""}>
                     <SelectValue placeholder="Bitte wählen" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="14days">Express (14 Tage) – 0,04€/Wh</SelectItem>
-                    <SelectItem value="2months">Standard (2 Monate) – 0,02€/Wh</SelectItem>
+                    <SelectItem value="14days">Kurzfristig (innerhalb von 14 Tagen)</SelectItem>
+                    <SelectItem value="2months">Flexibel (innerhalb von 2 Monaten)</SelectItem>
                   </SelectContent>
                 </Select>
-                {errors.timeframe && <p className="text-sm text-destructive">{errors.timeframe}</p>}
+                {errors.timeframe && (
+                  <p className="text-sm text-destructive">{errors.timeframe}</p>
+                )}
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="customerType">Kundenart *</Label>
-                <Select value={formData.customerType} onValueChange={(value) => setFormData({ ...formData, customerType: value })}>
+                <Select
+                  value={formData.customerType}
+                  onValueChange={(value) => setFormData({ ...formData, customerType: value })}
+                >
                   <SelectTrigger className={errors.customerType ? "border-destructive" : ""}>
                     <SelectValue placeholder="Bitte wählen" />
                   </SelectTrigger>
@@ -162,7 +182,9 @@ const handleSubmit = async (e: React.FormEvent) => {
                     <SelectItem value="authority">Behörde</SelectItem>
                   </SelectContent>
                 </Select>
-                {errors.customerType && <p className="text-sm text-destructive">{errors.customerType}</p>}
+                {errors.customerType && (
+                  <p className="text-sm text-destructive">{errors.customerType}</p>
+                )}
               </div>
 
               <div className="md:col-span-2 space-y-2">
@@ -176,7 +198,9 @@ const handleSubmit = async (e: React.FormEvent) => {
                   className={errors.email ? "border-destructive" : ""}
                   maxLength={255}
                 />
-                {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+                {errors.email && (
+                  <p className="text-sm text-destructive">{errors.email}</p>
+                )}
               </div>
             </div>
 
@@ -185,7 +209,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <div className="flex items-center gap-3">
                   <Calculator className="w-5 h-5 text-primary" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Geschätzter Preis</p>
+                    <p className="text-sm text-muted-foreground">Unverbindliche Bedarfsschätzung</p>
                     <p className="text-2xl font-bold text-primary">{calculatePrice()}€</p>
                   </div>
                 </div>
@@ -194,17 +218,17 @@ const handleSubmit = async (e: React.FormEvent) => {
 
             <Button type="submit" size="lg" className="w-full mt-8" disabled={isSubmitting}>
               {isSubmitting ? (
-                "Wird gesendet..."
+                "Wird eingetragen..."
               ) : (
                 <>
                   <Send className="w-5 h-5" />
-                  Unverbindliches Angebot anfordern
+                  Unverbindlich eintragen
                 </>
               )}
             </Button>
 
             <p className="text-sm text-muted-foreground text-center mt-4">
-              * Pflichtfelder. Ihre Daten werden vertraulich behandelt.
+              * Pflichtfelder. Ihre Angaben dienen ausschließlich zur Warteliste und werden vertraulich behandelt.
             </p>
           </form>
         </div>
