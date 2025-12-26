@@ -70,7 +70,7 @@ const Footer = () => {
 
         <div className="pt-8 border-t border-primary-foreground/20">
           <p className="text-center text-primary-foreground/60 text-sm">
-            © {new Date().getFullYear()} AkkuRecycling.de – Alle Rechte vorbehalten. Zertifiziert nach ElektroG.
+            © {new Date().getFullYear()} AkkuAbholung.de – Alle Rechte vorbehalten. Zertifiziert nach ElektroG.
           </p>
         </div>
       </div>
