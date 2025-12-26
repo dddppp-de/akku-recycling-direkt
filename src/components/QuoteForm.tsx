@@ -29,7 +29,7 @@ const QuoteForm = () => {
 
   const calculatePrice = () => {
     const capacity = parseFloat(formData.capacity) || 0;
-    const rate = formData.timeframe === "14days" ? 0.04 : 0.02;
+    const rate = formData.timeframe === "14days" ? 0.8 : 0.2;
     const price = capacity * rate;
     return Math.max(price, 20).toFixed(2);
   };
